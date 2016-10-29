@@ -87,6 +87,7 @@ void setup(){
       #ifdef DEBUG
         Serial1.println("Alarma por humo");
       #endif
+      escrituraSD();
       timer_reset();
       return;
     }
