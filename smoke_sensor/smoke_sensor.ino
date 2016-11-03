@@ -49,7 +49,7 @@ void setup()
 void loop()
 {
    Serial.print("SMOKE:"); 
-   Serial.print(MQGetGasPercentage(MQRead(MQ_PIN)/Ro,SmokeCurve) );
+   Serial.print(MQGetPercentage(MQRead(MQ_PIN)/Ro,SmokeCurve) );
    Serial.print( "ppm" );
    Serial.print("\n");
    delay(200);
