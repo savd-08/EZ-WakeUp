@@ -179,9 +179,6 @@
 <wire x1="4.572" y1="1.27" x2="4.572" y2="-6.985" width="0.0508" layer="21"/>
 <wire x1="4.572" y1="1.27" x2="-4.572" y2="1.27" width="0.0508" layer="21"/>
 <wire x1="-4.572" y1="-6.985" x2="-4.572" y2="1.27" width="0.0508" layer="21"/>
-<circle x="0" y="4.826" radius="1.8034" width="0.1524" layer="21"/>
-<circle x="0" y="4.826" radius="2.54" width="0" layer="43"/>
-<circle x="0" y="4.826" radius="2.54" width="0" layer="42"/>
 <pad name="1" x="-2.54" y="-10.16" drill="1.1176" shape="long" rot="R90"/>
 <pad name="2" x="0" y="-10.16" drill="1.1176" shape="long" rot="R90"/>
 <pad name="3" x="2.54" y="-10.16" drill="1.1176" shape="long" rot="R90"/>
@@ -193,7 +190,6 @@
 <rectangle x1="-3.175" y1="-10.414" x2="-1.905" y2="-7.62" layer="21"/>
 <rectangle x1="-0.635" y1="-10.414" x2="0.635" y2="-7.62" layer="21"/>
 <rectangle x1="1.905" y1="-10.414" x2="3.175" y2="-7.62" layer="21"/>
-<hole x="0" y="4.826" drill="3.302"/>
 </package>
 <package name="TO39">
 <description>&lt;b&gt;Metal Can Package&lt;/b&gt;</description>
@@ -6802,16 +6798,16 @@ Standard 4-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <text x="8.89" y="8.89" size="1.27" layer="27">&gt;VALUE</text>
 </package>
 <package name="ESP_HUZZAH_FP">
-<pad name="RST" x="-10.16" y="10.16" drill="1.1" diameter="1.9304" shape="square"/>
-<pad name="ADC" x="-10.16" y="7.62" drill="1.1" diameter="1.9304"/>
-<pad name="EN" x="-10.16" y="5.08" drill="1.1" diameter="1.9304"/>
-<pad name="16" x="-10.16" y="2.54" drill="1.1" diameter="1.9304"/>
-<pad name="14" x="-10.16" y="0" drill="1.1" diameter="1.9304"/>
-<pad name="12" x="-10.16" y="-2.54" drill="1.1" diameter="1.9304"/>
-<pad name="13" x="-10.16" y="-5.08" drill="1.1" diameter="1.9304"/>
-<pad name="V+" x="-10.16" y="-7.62" drill="1.1" diameter="1.9304"/>
-<pad name="VBAT" x="-10.16" y="-10.16" drill="1.1" diameter="1.9304"/>
-<pad name="GND" x="-10.16" y="-12.7" drill="1.1" diameter="1.9304"/>
+<pad name="RST" x="-11.43" y="10.16" drill="1.1" diameter="1.9304" shape="square"/>
+<pad name="ADC" x="-11.43" y="7.62" drill="1.1" diameter="1.9304"/>
+<pad name="EN" x="-11.43" y="5.08" drill="1.1" diameter="1.9304"/>
+<pad name="16" x="-11.43" y="2.54" drill="1.1" diameter="1.9304"/>
+<pad name="14" x="-11.43" y="0" drill="1.1" diameter="1.9304"/>
+<pad name="12" x="-11.43" y="-2.54" drill="1.1" diameter="1.9304"/>
+<pad name="13" x="-11.43" y="-5.08" drill="1.1" diameter="1.9304"/>
+<pad name="V+" x="-11.43" y="-7.62" drill="1.1" diameter="1.9304"/>
+<pad name="VBAT" x="-11.43" y="-10.16" drill="1.1" diameter="1.9304"/>
+<pad name="GND" x="-11.43" y="-12.7" drill="1.1" diameter="1.9304"/>
 <pad name="TX" x="8.89" y="10.16" drill="1.1" diameter="1.9304"/>
 <pad name="RX" x="8.89" y="7.62" drill="1.1" diameter="1.9304"/>
 <pad name="5" x="8.89" y="5.08" drill="1.1" diameter="1.9304"/>
@@ -6823,9 +6819,9 @@ Standard 4-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <pad name="LDO" x="8.89" y="-10.16" drill="1.1" diameter="1.9304"/>
 <pad name="GND1" x="8.89" y="-12.7" drill="1.1" diameter="1.9304"/>
 <wire x1="-13.97" y1="16.51" x2="-13.97" y2="-21.59" width="0.127" layer="21"/>
-<wire x1="-13.97" y1="-21.59" x2="12.7" y2="-21.59" width="0.127" layer="21"/>
-<wire x1="12.7" y1="-21.59" x2="12.7" y2="16.51" width="0.127" layer="21"/>
-<wire x1="12.7" y1="16.51" x2="-13.97" y2="16.51" width="0.127" layer="21"/>
+<wire x1="-13.97" y1="-21.59" x2="11.43" y2="-21.59" width="0.127" layer="21"/>
+<wire x1="11.43" y1="-21.59" x2="11.43" y2="16.51" width="0.127" layer="21"/>
+<wire x1="11.43" y1="16.51" x2="-13.97" y2="16.51" width="0.127" layer="21"/>
 <text x="-3.81" y="8.89" size="1.27" layer="27">&gt;VALUE</text>
 <text x="-3.81" y="11.43" size="1.27" layer="25">&gt;NAME</text>
 </package>
