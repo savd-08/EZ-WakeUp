@@ -223,11 +223,12 @@ void server_setup()
 
   /* Se asocia cada solicitud con la función que la maneja */
   server.on("/alarm", set_alarm);
-  server.on("/network", set_network);
-  server.on("/ap", set_ap);
+  server.on("/ssid", set_ssid);
+  server.on("/password", set_password);
   server.on("/smoke", set_smoke);
   server.on("/ultrasonic", set_ultrasonic);
-
+  server.on("/ap_name", set_ap_name);
+  server.on("/ap_pass", set_ap_pass);
   /* Se inicia el servidor */
   server.begin();
 }
@@ -251,18 +252,30 @@ void set_alarm()
   eeprom_save_config();
 }
 
-void set_network()
+void set_ssid()
 {
   strcpy(dev_config.ssid, server.arg(0).c_str());
-  strcpy(dev_config.pass, server.arg(1).c_str());
   server.send(200, "text/plain", "Cool!");
   eeprom_save_config();
 }
 
-void set_ap()
+void set_password()
+{
+  strcpy(dev_config.pass, server.arg(0).c_str());
+  server.send(200, "text/plain", "Cool!");
+  eeprom_save_config();
+}
+
+void set_ap_name()
 {
   strcpy(dev_config.ssid_ap, server.arg(0).c_str());
-  strcpy(dev_config.pass_ap, server.arg(1).c_str());
+  server.send(200, "text/plain", "Cool!");
+  eeprom_save_config();
+}
+
+void set_ap_pass()
+{
+  strcpy(dev_config.pass_ap, server.arg(0).c_str());
   server.send(200, "text/plain", "Cool!");
   eeprom_save_config();
 }
