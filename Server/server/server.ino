@@ -8,15 +8,10 @@ const char WiFiAPPSK[] = "bulldozer";
 
 ESP8266WebServer server(80);  // Instancia del servidor
 
-const int LED_PIN = 5; // LED integrado en el Thing
-
 void setup() 
 {
-  delay(1000);
+  //delay(1000);
   Serial.begin(115200);
-
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
 
   Serial.println();
   Serial.println("Configurando AP...");
@@ -25,9 +20,12 @@ void setup()
 
   /* Se asocia cada solicitud con la función que la maneja */
   server.on("/alarm", set_alarm);
-  server.on("/network", set_network);
+  server.on("/ssid", set_ssid);
+  server.on("/password", set_password);
   server.on("/smoke", set_smoke);
   server.on("/ultrasonic", set_ultrasonic);
+  server.on("/ap_name", set_ap_name);
+  server.on("/ap_pass", set_ap_pass);
 
   /* Se inicia el servidor */
   server.begin();
@@ -66,17 +64,21 @@ void set_alarm()
 {
   int alarm_time = server.arg(0).toInt();
   Serial.print("Alarma: ");
-  Serial.println(alarm_time, DEC);
-  digitalWrite(LED_PIN, HIGH);
+  Serial.println(alarm_time);
   server.send(200, "text/plain", "Cool!");
 }
 
-void set_network()
+void set_ssid()
 {
   String _ssid = server.arg(0);
   Serial.print("SSID: ");
   Serial.println(_ssid);
-  String _password = server.arg(1);
+  server.send(200, "text/plain", "Cool!");
+}
+
+void set_password()
+{
+  String _password = server.arg(0);
   Serial.print("Password: ");
   Serial.println(_password);
   server.send(200, "text/plain", "Cool!");
@@ -87,7 +89,6 @@ void set_smoke()
   int thresh = server.arg(0).toInt();
   Serial.print("Threshold: ");
   Serial.println(thresh);
-  digitalWrite(LED_PIN, LOW);
   server.send(200, "text/plain", "Cool!");
 }
 
@@ -96,5 +97,21 @@ void set_ultrasonic()
   int thresh = server.arg(0).toInt();
   Serial.print("Threshold: ");
   Serial.println(thresh);
+  server.send(200, "text/plain", "Cool!");
+}
+
+void set_ap_name()
+{
+  String _name = server.arg(0);
+  Serial.print("AP Name: ");
+  Serial.println(_name);
+  server.send(200, "text/plain", "Cool!");
+}
+
+void set_ap_pass()
+{
+  String _pass = server.arg(0);
+  Serial.print("AP Password: ");
+  Serial.println(_pass);
   server.send(200, "text/plain", "Cool!");
 }
