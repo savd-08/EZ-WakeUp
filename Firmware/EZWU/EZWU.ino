@@ -7,12 +7,12 @@
 #include <Servo.h>
 #include <SPI.h>
 
-#define MODE_SW 0   //Interruptor de modo: 0 config, 1 operación
-#define ALM_BT 0    //Botón de apagado de alarma (podría ser RST)
+#define MODE_SW 13//Interruptor de modo: 0 config, 1 operación
+#define ALM_BT 12    //Botón de apagado de alarma (podría ser RST)
 #define SRV_L 5     //Servo izquierdo
 #define SRV_R 4     //Servo derecho
-#define TRIG 3      //Señal trigger para sensor ultrasónico
-#define ECHO 1      //Señal echo de sensor ultrasónico
+//#define TRIG 3      //Señal trigger para sensor ultrasónico
+#define ECHO 3      //Señal echo de sensor ultrasónico
 #define BUZZER 15   //Señal de control para el buzzer
 
 #define SLEEP_TIME 60 //Tiempo en segundos para el estado de bajo consumo
@@ -91,7 +91,7 @@ void setup(){
         
         //Se parsea la hora de la respuesta de la solicitud a formato 60*h + m
         int gmt_time = parse_time(time_resp);
-        
+        gmt_time -= 360;
         #ifdef DEBUG
           Serial1.print("Hora formateada: ");
           Serial1.println(gmt_time);
@@ -100,7 +100,7 @@ void setup(){
         //Si es la hora programada se sale de la función setup para continuar con loop 
         if(gmt_time == dev_config.alarm_time){
           #ifdef DEBUG
-            Serial1.println("Alarma por hora");
+            Serial1.println("Alarma por hora " + gmt_time);
           #endif
           timer_reset();
           //ESP.wdtEnable(1000);
@@ -113,8 +113,8 @@ void setup(){
       Serial1.println();
     #endif
     //Se entra en estado de bajo consumo durante el tiempo especificado
-    //ESP.deepSleep(SLEEP_TIME * 1000000);
-    ESP.restart();
+    ESP.deepSleep(SLEEP_TIME * 1000000);
+    //ESP.restart();
   }
 }
 
@@ -123,7 +123,9 @@ void loop(){
 
   los_blocked = (read_ultrasonic() < dev_config.dist_thresh) ? true : false;
   digitalWrite(BUZZER, HIGH);
-
+  if(!digitalRead(ALM_BT)){
+    ESP.restart();
+  }
   if(t < rand_delay && !rotate){
     if(!los_blocked){
       servo_r.writeMicroseconds(1800);
@@ -159,10 +161,10 @@ void dev_setup(){
   #endif
   
   //Se colocan varios pines del sistema en el estado que se requiere
-  pinMode(TRIG, OUTPUT);
+  //pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT_PULLUP);
 
-  //pinMode(MODE_SW, INPUT);
+  pinMode(MODE_SW, INPUT_PULLUP);
   pinMode(BUZZER, OUTPUT);
   pinMode(ALM_BT, INPUT_PULLUP);
 
@@ -172,11 +174,12 @@ void dev_setup(){
   digitalWrite(BUZZER, LOW);
   servo_r.writeMicroseconds(1500);
   servo_l.writeMicroseconds(1500);
+  //SD.begin(SS);
 }
 
 void timer_reset(){
   t0 = millis();
-  randomSeed(analogRead(A0));
+  randomSeed(millis()/2);
   rand_delay = random(1000,4000);
   #ifdef DEBUG
     Serial1.println("Timer reset");
@@ -186,7 +189,7 @@ void timer_reset(){
 }
 
 //Escribir algún mensaje en un archivo en la tarjeta SD
-boolean write_log(String msg) {
+/*boolean write_log(String msg) {
   File file_out;
   file_out = SD.open("log.txt", FILE_WRITE);
   //Escribir solo si el archivo se abrió adecuadamente
@@ -204,7 +207,7 @@ boolean write_log(String msg) {
     return false;
   }
 }
-
+*/
 
 //-------------------------Server------------------------------------------
 
@@ -237,16 +240,20 @@ void server_loop() {
   /*  Se encarga de manejar las solicitudes provenientes de los clientes.
    *  Para cada solicitud identifica la función que la maneja 
    */
-  server.handleClient();
-  if(digitalRead(MODE_SW)){
-    ESP.restart();
+  while(!digitalRead(MODE_SW)){
+    server.handleClient();
+    delay(50);
   }
+  ESP.restart();
 }
 
 /* Los parámetros se obtienen del JSON de la solicitud con el método server.arg() */
 
 void set_alarm()
 {
+  #ifdef DEBUG
+      Serial1.println(server.arg(0));
+    #endif
   dev_config.alarm_time = server.arg(0).toInt();
   server.send(200, "text/plain", "Cool!");
   eeprom_save_config();
@@ -324,9 +331,9 @@ void eeprom_load_config(){
 }
 
 void default_config(){
-  strcpy(dev_config.ssid, "CuartosMamaCoyita");
-  strcpy(dev_config.pass, "CMC12345");
-  strcpy(dev_config.ssid_ap, "Mefisto");
+  strcpy(dev_config.ssid, "ACM1PT");
+  strcpy(dev_config.pass, "pwSwYdoG6");
+  strcpy(dev_config.ssid_ap, "EZWakeUp");
   strcpy(dev_config.pass_ap, "bulldozer");
   dev_config.smoke_thresh = 69;
   dev_config.dist_thresh = 30;
@@ -417,7 +424,8 @@ int mq_read(){
         Serial1.println(smoke_ppm);
   #endif
 
-  String log_str = "Se ha detectado " + String(smoke_ppm) + " ppm de humo";
+  //String log_str = "Se ha detectado " + String(smoke_ppm) + " ppm de humo";
+  //write_log(log_str);
   
   return smoke_ppm;  
 }
